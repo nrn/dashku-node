@@ -1,0 +1,23 @@
+{
+  "author": "Paul Jensen <admin@dashku.com>",
+  "name": "dashku",
+  "description": "A wrapper to the dashku API",
+  "version": "0.0.0",
+  "homepage": "https://github.com/paulbjensen/dashku-node",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/paulbjensen/dashku-node.git"
+  },
+  "dependencies": {
+    "request":"latest"
+  },
+  "devDependencies": {
+    "mocha":"latest",
+    "coffee-script":"latest"
+  },
+  "optionalDependencies": {},
+  "main": "./lib/dashku",  
+  "engines": {
+    "node": "*"
+  }
+}
