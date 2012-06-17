@@ -27,9 +27,8 @@ exports.getDashboard = (id, cb) ->
       cb body
 
 # creates a dashboard
-exports.createDashboard = (data, cb=null) ->
+exports.createDashboard = (body, cb=null) ->
   url     = "#{@apiUrl}/api/dashboards?apiKey=#{@apiKey}"
-  body    = JSON.stringify data
   json    = true
   request.post {url, body, json}, (err,res,body) ->
     if res.statusCode is 202
@@ -38,9 +37,8 @@ exports.createDashboard = (data, cb=null) ->
       cb body
 
 # updates a dashboard
-exports.updateDashboard = (data, cb=null) ->
-  url     = "#{@apiUrl}/api/dashboards/#{data._id}?apiKey=#{@apiKey}"
-  body    = JSON.stringify data
+exports.updateDashboard = (body, cb=null) ->
+  url     = "#{@apiUrl}/api/dashboards/#{body._id}?apiKey=#{@apiKey}"
   json    = true
   request.put {url, body, json}, (err,res,body) ->
     if res.statusCode is 201
@@ -51,7 +49,6 @@ exports.updateDashboard = (data, cb=null) ->
 # deletes a dashboard
 exports.deleteDashboard = (dashboardId, cb=null) ->
   url     = "#{@apiUrl}/api/dashboards/#{dashboardId}?apiKey=#{@apiKey}"
-  json    = true
   request.del url, (err,res,body) ->
     if res.statusCode is 201
       cb status: 'success', dashboardId: body
@@ -59,10 +56,9 @@ exports.deleteDashboard = (dashboardId, cb=null) ->
       cb JSON.parse body
 
 # creates a widget
-exports.createWidget = (attributes, cb=null) ->
-  url     = "#{@apiUrl}/api/dashboards/#{attributes.dashboardId}/widgets?apiKey=#{@apiKey}"
+exports.createWidget = (body, cb=null) ->
+  url     = "#{@apiUrl}/api/dashboards/#{body.dashboardId}/widgets?apiKey=#{@apiKey}"
   json    = true
-  body    = JSON.stringify attributes
   request.post {url, body, json}, (err,res,body) ->
     if res.statusCode is 202
       cb status: 'success', widget: body
@@ -70,9 +66,8 @@ exports.createWidget = (attributes, cb=null) ->
       cb body
 
 # updates a widget
-exports.updateWidget = (attributes, cb=null) ->
-  url     = "#{@apiUrl}/api/dashboards/#{attributes.dashboardId}/widgets/#{attributes._id}?apiKey=#{@apiKey}"
-  body    = JSON.stringify attributes
+exports.updateWidget = (body, cb=null) ->
+  url     = "#{@apiUrl}/api/dashboards/#{body.dashboardId}/widgets/#{body._id}?apiKey=#{@apiKey}"
   json    = true
   request.put {url, body, json}, (err,res,body) ->
     if res.statusCode is 201
@@ -89,3 +84,12 @@ exports.deleteWidget = (dashboardId, widgetId, cb=null) ->
       cb status: 'success', widgetId: body
     else
       cb JSON.parse body
+
+exports.transmission = (body, cb=null) ->
+  url     = "#{@apiUrl}/api/transmission?apiKey=#{@apiKey}"
+  json    = true
+  request.post {url, body, json}, (err,res,body) ->
+    if res.statusCode is 200
+      cb status: 'success'
+    else
+      cb body

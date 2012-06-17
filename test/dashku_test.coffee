@@ -250,3 +250,20 @@ describe 'Dashku', ->
               assert.equal response.reason, 'No dashboard found with id Waa'
               dashku.deleteDashboard dashboardId, (response) ->
                 done()
+  describe 'transmission', ->
+
+    it "should return a success status", (done) ->
+      dashku.getDashboards (response) ->
+        dash = dashboard for dashboard in response.dashboards when dashboard.widgets.length > 0
+        widget = dash.widgets[0]
+        data = widget.json
+        dashku.transmission data, (response) ->
+          assert.equal response.status, 'success'
+          done()
+
+    it "should throw an error if the response fails", (done) ->
+      dashku.setApiKey 'waa', ->
+        dashku.transmission {}, (response) ->
+          assert.equal response.status, 'failure'
+          assert.equal response.reason, "Couldn't find a user with that API key"          
+          done()
