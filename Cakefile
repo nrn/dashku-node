@@ -16,8 +16,6 @@ build = (watch, callback) ->
 
 files = [
   'dashku.coffee',
-  'dashku/dashboard.coffee',  
-  'dashku/widget.coffee',  
 ]
 
 buildDocs = (callback) ->
