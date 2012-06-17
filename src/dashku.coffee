@@ -56,4 +56,36 @@ exports.deleteDashboard = (dashboardId, cb=null) ->
     if res.statusCode is 201
       cb status: 'success', dashboardId: body
     else
-      cb JSON.parse body#status: 'failure', reason: body.reason
+      cb JSON.parse body
+
+# creates a widget
+exports.createWidget = (attributes, cb=null) ->
+  url     = "#{@apiUrl}/api/dashboards/#{attributes.dashboardId}/widgets?apiKey=#{@apiKey}"
+  json    = true
+  body    = JSON.stringify attributes
+  request.post {url, body, json}, (err,res,body) ->
+    if res.statusCode is 202
+      cb status: 'success', widget: body
+    else
+      cb body
+
+# updates a widget
+exports.updateWidget = (attributes, cb=null) ->
+  url     = "#{@apiUrl}/api/dashboards/#{attributes.dashboardId}/widgets/#{attributes._id}?apiKey=#{@apiKey}"
+  body    = JSON.stringify attributes
+  json    = true
+  request.put {url, body, json}, (err,res,body) ->
+    if res.statusCode is 201
+      cb status: 'success', widget: body
+    else
+      cb body
+
+# deletes a widget
+exports.deleteWidget = (dashboardId, widgetId, cb=null) ->
+  url     = "#{@apiUrl}/api/dashboards/#{dashboardId}/widgets/#{widgetId}?apiKey=#{@apiKey}"
+  json    = true
+  request.del url, (err,res,body) ->
+    if res.statusCode is 201
+      cb status: 'success', widgetId: body
+    else
+      cb JSON.parse body
