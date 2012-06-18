@@ -1,9 +1,15 @@
 request         = require 'request'
-@apiUrl         = "https://localhost" 
+# Pointing directly to dashku.com's ip address due to slow responses from dashku.com
+@apiUrl         = "http://176.58.100.203" 
 
 # Sets the api key used by the client
 exports.setApiKey = (value, cb=null) ->
   @apiKey = value
+  cb() if cb?
+
+# Sets the api url used by the client
+exports.setApiUrl = (value, cb=null) ->
+  @apiUrl = value
   cb() if cb?
 
 # returns all of the user's dashboards

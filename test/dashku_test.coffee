@@ -15,6 +15,15 @@ describe 'Dashku', ->
         assert.equal dashku.apiKey, key
         done()
 
+  describe 'setApiUrl', ->
+
+    it 'should set the api url for the library', (done) ->
+      url = 'https://localhost'
+      dashku.setApiUrl url, ->
+        assert.equal dashku.apiUrl, url
+        dashku.setApiUrl 'http://localhost', ->
+          done()
+
   describe "Dashboards", ->
 
     describe 'getDashboards()', ->
@@ -250,6 +259,7 @@ describe 'Dashku', ->
               assert.equal response.reason, 'No dashboard found with id Waa'
               dashku.deleteDashboard dashboardId, (response) ->
                 done()
+
   describe 'transmission', ->
 
     it "should return a success status", (done) ->
