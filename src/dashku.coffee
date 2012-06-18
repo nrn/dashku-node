@@ -1,5 +1,5 @@
 request         = require 'request'
-# Pointing directly to dashku.com's ip address due to slow responses from dashku.com
+# Pointing directly to dashku.com's ip address due to DNS issue with hitting dashku.com.
 @apiUrl         = "http://176.58.100.203" 
 
 # Sets the api key used by the client
