@@ -13,6 +13,9 @@ Example Usage
 
 Require the library and set your api key.
 
+
+```javascript
+
     var dashku = require('dashku');
     dashku.setApiKey('YOUR_API_KEY', function(){
       
@@ -24,6 +27,8 @@ Require the library and set your api key.
       });
       
     });
+
+```
  
 
 Available Commands
@@ -49,6 +54,8 @@ Allows you to provide your api key to the library. This needs to be called befor
 
 The callback function is optional.
 
+```javascript
+
     // set the api key, then run your code
     dashku.setApiKey('YOUR_API_KEY', function(){
       // run your code here      
@@ -57,6 +64,7 @@ The callback function is optional.
     // or alternatively, you can call the command like this:
     dashku.setApiKey('YOUR_API_KEY');
 
+```
 
 setApiUrl
 --
@@ -65,6 +73,8 @@ Allows you to define the api url to the library. This may come is useful if the 
 
 The callback function is optional.
 
+```javascript
+
     // set the api url, then run your code
     dashku.setApiUrl('API_URL', function(){
       // run your code here      
@@ -72,11 +82,15 @@ The callback function is optional.
     
     // or alternatively, you can call the command like this:
     dashku.setApiUrl('API_URL');
+
+```
     
 getDashboards
 --
 
 Retrieve all of your dashboards.
+
+```javascript
 
     dashku.getDashboards(function(response){
     
@@ -94,11 +108,15 @@ Retrieve all of your dashboards.
       //   }
     
     });
-    
+
+```
+
 getDashboard
 --
 
 Retrieves a dashboard, given the id of the dashboard.
+
+```javascript
 
     dashku.getDashboard('DASHBOARD_ID', function(response){
     
@@ -118,10 +136,14 @@ Retrieves a dashboard, given the id of the dashboard.
     
     });
 
+```
+
 createDashboard
 --
 
 Creates a dashboard, given some attributes.
+
+```javascript
 
     var attributes = {
       name: "Sales dashboard"
@@ -144,10 +166,14 @@ Creates a dashboard, given some attributes.
 
     });
 
+```
+
 updateDashboard
 --
 
 Updates a dashboard, given some attributes.
+
+```javascript
 
     var attributes = {
       _id: 'DASHBOARD_ID',
@@ -170,11 +196,15 @@ Updates a dashboard, given some attributes.
       //   }
     
     })
+
+```
     
 deleteDashboard
 --
 
 Deletes a dashboard, given the id of the dashboard.
+
+```javascript
 
     dashku.deleteDashboard('DASHBOARD_ID', function(response){
 
@@ -192,11 +222,15 @@ Deletes a dashboard, given the id of the dashboard.
       //   }      
 
     });
+
+```
     
 createWidget
 --
 
 Creates a widget, given some attributes.
+
+```javascript
 
 	var attributes = {
 		dashboardId:  'DASHBOARD_ID',
@@ -223,11 +257,16 @@ Creates a widget, given some attributes.
       //   }      
     
     });
+
+```
     
 updateWidget
 --
 
 Updates an existing widget, given some attributes.
+
+
+```javascript
 
 	var attributes = {
 		dashboardId:  'DASHBOARD_ID',
@@ -252,10 +291,14 @@ Updates an existing widget, given some attributes.
     
     });
 
+```
+
 deleteWidget
 --
 
 Deletes an existing widget, given a dashboard id and widget id
+
+```javascript
 
     dashku.deleteWidget('DASHBOARD_ID','WIDGET_ID',function(response){
       
@@ -273,11 +316,15 @@ Deletes an existing widget, given a dashboard id and widget id
       //   }
     
     });
+
+```
     
 transmission
 --
 
 Transmits data to an existing widget, given an object that can be converted to JSON
+
+```javascript
 
     var data = {
       _id: "WIDGET_ID",
@@ -299,6 +346,8 @@ Transmits data to an existing widget, given an object that can be converted to J
       //   }
     
     });
+
+```
    
 License     
 ---
