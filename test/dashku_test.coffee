@@ -115,7 +115,7 @@ describe 'Dashku', ->
           dashboardId = dashboard._id for dashboard in response.dashboards when dashboard.name is "ZZZ dashboard"        
           dashku.deleteDashboard dashboardId, (response) ->
             assert.equal response.status, 'success'
-            assert.equal response.dashboardId, JSON.stringify dashboardId
+            assert.equal response.dashboardId, JSON.stringify {dashboardId}
             done()
 
       it "should throw an error if the response fails", (done) ->
@@ -217,7 +217,6 @@ describe 'Dashku', ->
               dashku.deleteDashboard dashboardId, (response) ->
                 done()
 
-
     describe "deleteWidget()", ->
       
       it "should return the id of the deleted widget", (done) ->
@@ -236,7 +235,7 @@ describe 'Dashku', ->
             widgetId = response.widget._id
             dashku.deleteWidget dashboardId, widgetId, (response) ->
               assert.equal response.status, 'success' 
-              assert.equal response.widgetId, JSON.stringify widgetId
+              assert.equal response.widgetId, JSON.stringify {widgetId}
               dashku.deleteDashboard dashboardId, (response) ->
                 done()
 

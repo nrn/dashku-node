@@ -2,7 +2,7 @@
   "author": "Paul Jensen <admin@dashku.com>",
   "name": "dashku",
   "description": "A wrapper to the dashku API",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "homepage": "https://github.com/paulbjensen/dashku-node",
   "repository": {
     "type": "git",
