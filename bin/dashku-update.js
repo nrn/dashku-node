@@ -51,6 +51,7 @@ if (argv.p) {
   html = fs.readFileSync(path.join(cwd, 'widget.html'), 'utf8')
   css = fs.readFileSync(path.join(cwd, 'widget.css'), 'utf8')
   json = fs.readFileSync(path.join(cwd, 'widget.json'), 'utf8')
+  json = conf(json)
 
   if (config.scriptType === 'coffeescript') {
     script = fs.readFileSync(path.join(cwd, 'widget.coffee'), 'utf8')
@@ -91,6 +92,7 @@ if (argv.p) {
 } else if (argv.t) {
 
   json = fs.readFileSync(path.join(cwd, 'widget.json'), 'utf8')
+  json = conf(json)
 
   dashku.transmission(json, function (res) {
     console.log(res)
@@ -99,4 +101,11 @@ if (argv.p) {
 } else {
   optimist.showHelp()
 }
+
+function conf (example) {
+  example.apiKey = config.apiKey
+  example._id = config.widgetId
+  return example
+}
+
 
