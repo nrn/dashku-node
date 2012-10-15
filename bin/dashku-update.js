@@ -6,13 +6,14 @@ var fs = require('fs')
   , dashku = require('../')
   , optimist = require('optimist')
   , cwd = process.cwd()
+  , folder = path.basename(cwd)
   , config
   , html
   , css
   , json
   , script
   , usage = 'Expects a config.json file with { apiKey, dashboardId, widgetId }'
-      + '\nand an optional scriptType, and optional apiUrl.'
+      + '\nand optional { scriptType, apiUrl, name, snapshortUrl }.'
       + '\nHTML, CSS, test JSON, and script'
       + '\nare saved as `widget.html`, `widget.css`, `widget.json`, and'
       + '\neither `widget.js` or `widget.coffee`'
@@ -28,6 +29,11 @@ var argv = optimist.usage(usage + '\nUsage: $0')
     , boolean: true
     , describe: 'Get new version of widget from dashku'
     })
+  .options('s',
+    { alias: 'seed'
+    , boolean: true
+    , describe: 'Turn a widget into a seed file for use as a template.'
+    })
   .options('t',
     { alias: 'transmit'
     , boolean: true
@@ -40,6 +46,13 @@ try {
   optimist.showHelp()
   console.log('Error reading config.json')
   process.exit()
+}
+
+// Fill in defaults for config
+if (!config.name) config.name = folder
+if (!config.scriptType) config.scriptType = 'javascript'
+if (!config.snapshotUrl) {
+  config.snapshotUrl = '/images/widgetTemplates/' + folder + '.png'
 }
 
 dashku.setApiKey(config.apiKey)
@@ -66,10 +79,10 @@ if (argv.p) {
     , css: css
     , script: script
     , json: json
+    , scriptType: config.scriptType
     }
-  if (config.scriptType) newWidget.scriptType = config.scriptType
   dashku.updateWidget(newWidget, function (res) {
-    console.log(res)
+    console.log(res.status)
   })
 } else if (argv.g) {
 
@@ -80,7 +93,8 @@ if (argv.p) {
     })[0].widgets.forEach(function (item) {
       if (item._id === config.widgetId) widget = item
     })
-    console.log(widget)
+    console.log(res.status)
+    widget.json = scrub(widget.json)
     fs.writeFile('widget.json', widget.json)
     if (widget.scriptType === 'coffeescript') {
       fs.writeFile('widget.coffee', widget.script)
@@ -97,17 +111,50 @@ if (argv.p) {
   json = conf(json)
 
   dashku.transmission(json, function (res) {
-    console.log(res)
+    console.log(res.status)
   })
+
+} else if (argv.s) {
+  html = fs.readFileSync(path.join(cwd, 'widget.html'), 'utf8')
+  css = fs.readFileSync(path.join(cwd, 'widget.css'), 'utf8')
+  json = fs.readFileSync(path.join(cwd, 'widget.json'), 'utf8')
+  json = conf(json)
+
+  if (config.scriptType === 'coffeescript') {
+    script = fs.readFileSync(path.join(cwd, 'widget.coffee'), 'utf8')
+  } else {
+    script = fs.readFileSync(path.join(cwd, 'widget.js'), 'utf8')
+  }
+
+  var seed = 'module.exports ='
+    + "\n  name: '''" + config.name
+    + "'''\n  json: '''" + scrub(json)
+    + "'''\n  scriptType: '''" + config.scriptType
+    + "'''\n  script: '''" + script
+    + "'''\n  html: '''" + html
+    + "'''\n  css: '''" + css
+    + "'''\n  snapshotUrl: '''" + config.snapshotUrl
+    + "'''\n"
+
+  fs.writeFile('seed.coffee', seed)
 
 } else {
   optimist.showHelp()
 }
 
-function conf (example) {
-  example.apiKey = config.apiKey
-  example._id = config.widgetId
-  return example
+function scrub (example) {
+    // scrub the id and api key from widget.json
+    example = JSON.parse(example)
+    delete example._id
+    delete example.apiKey
+    return JSON.stringify(example, null, 2)
 }
 
+function conf (example) {
+  // Add the id and api key from config.json
+  example = JSON.parse(example)
+  example.apiKey = config.apiKey
+  example._id = config.widgetId
+  return JSON.stringify(example, null, 2)
+}
 
