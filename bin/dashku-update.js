@@ -73,9 +73,11 @@ if (argv.p) {
   })
 } else if (argv.g) {
 
-  dashku.getDashboard(config.dashboardId, function (res) {
+  dashku.getDashboards(function (res) {
     var widget
-    res.dashboard.widgets.forEach(function (item) {
+    res.dashboards.filter(function (db) {
+      if (db._id === config.dashboardId) return true
+    })[0].widgets.forEach(function (item) {
       if (item._id === config.widgetId) widget = item
     })
     console.log(widget)
