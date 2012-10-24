@@ -34,6 +34,11 @@ var argv = optimist.usage(usage + '\nUsage: $0')
     , boolean: true
     , describe: 'Turn a widget into a seed file for use as a template.'
     })
+  .options('c',
+    { alias: 'create'
+    , boolean: true
+    , describe: 'Create a new widget on the remote dashboard.'
+    })
   .options('t',
     { alias: 'transmit'
     , boolean: true
@@ -138,7 +143,36 @@ if (argv.p) {
 
   fs.writeFile('seed.coffee', seed)
 
-} else {
+} else if (argv.c) {
+  html = fs.readFileSync(path.join(cwd, 'widget.html'), 'utf8')
+  css = fs.readFileSync(path.join(cwd, 'widget.css'), 'utf8')
+  json = fs.readFileSync(path.join(cwd, 'widget.json'), 'utf8')
+  json = conf(json)
+
+  if (config.scriptType === 'coffeescript') {
+    script = fs.readFileSync(path.join(cwd, 'widget.coffee'), 'utf8')
+  } else {
+    script = fs.readFileSync(path.join(cwd, 'widget.js'), 'utf8')
+  }
+
+  var newWidget =
+    { dashboardId: config.dashboardId
+    , name: config.name
+    , html: html
+    , css: css
+    , script: script
+    , json: json
+    , scriptType: config.scriptType
+    }
+
+  dashku.createWidget(newWidget, function (res) {
+    if (!config.widgetId) {
+      config.widgetId = res.widget._id
+      fs.writeFile('config.json', JSON.stringify(config, null, 2))
+    } else console.log('Created: ' + res.widget._id)
+    console.log(res.status)
+  })
+}else {
   optimist.showHelp()
 }
 
