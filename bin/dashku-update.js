@@ -82,7 +82,6 @@ if (argv.p) {
 
   var newWidget =
     { dashboardId: config.dashboardId
-    , name: config.name
     , _id: config.widgetId
     , html: html
     , css: css
